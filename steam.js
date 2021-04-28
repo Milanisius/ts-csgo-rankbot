@@ -40,7 +40,9 @@ class Steam {
             //Register event listener for one time use
             this.CSGOCli.once('playerProfile', async (profile) => {
                 let ranking = profile.account_profiles[0].ranking;
-
+		console.log("Loggings from getCSGORankOFSTEAM64 id");
+		console.log(profile);
+		console.log(ranking);
                 //We need to check if ranking is set; if not, the user has not added us to their friend list
                 if(ranking !== null)
                 {
@@ -52,7 +54,9 @@ class Steam {
                     resolve(null);
                 }
             });
-
+	    console.log("line 57");
+	    console.log(steam64id);
+	    console.log(this.CSGOCli.ToAccountID(steam64id));
             this.CSGOCli.playerProfileRequest(this.CSGOCli.ToAccountID(steam64id));
         }));
     }
@@ -137,7 +141,10 @@ class Steam {
                 }
 
                 let rankId = await this.getCSGORankOfSteam64id(steam64id);
-
+		console.log("XXXXXX request update rank id ${rankId}");
+		console.log(rankId);
+		console.log(steam64id);
+		console.log(tsUid);
                 await exchangeChannel.postMessage(`update_rank ${tsUid} ${rankId}`);
             }
             break;
@@ -150,7 +157,10 @@ class Steam {
                 }
 
                 let rankId = await this.getCSGORankOfSteam64id(steam64id);
-
+		console.log("XXXXXX tick update rank id ${rankId}");
+		console.log(rankId);
+		console.log(steam64id);
+		console.log(tsUid);
                 await exchangeChannel.postMessage(`update_tick_update_rank ${tsUid} ${rankId}`);
             }
             break;
@@ -234,7 +244,8 @@ class Steam {
 
         //Steam Login Event
         this.SteamClient.on('logOnResponse', (response) => {
-            if(response.eresult === steamApi.EResult.OK)
+            console.log(response);
+	    if(response.eresult === steamApi.EResult.OK)
             {
                 logger.info("Steam interface logged in successful");
 

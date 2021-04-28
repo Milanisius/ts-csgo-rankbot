@@ -8,6 +8,9 @@ const BroadcastChannel = require('broadcast-channel');
 const exchangeChannel = new BroadcastChannel('exchange');
 const i18n = require("i18n");
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 class Teamspeak {
 
@@ -356,7 +359,9 @@ class Teamspeak {
         }, config.botConfig.checkIntervalTime * 1000 * 60);
     }
 
-
+//sleep(ms) {
+ // return new Promise(resolve => setTimeout(resolve, ms));
+//}
 
 
     /**
@@ -365,6 +370,7 @@ class Teamspeak {
     async updateTick() {
         //get all clients online
         let onlineClients = await this.ts3.clientList({client_type: 0});
+
 
         for(let i = 0; i < onlineClients.length; i++){
             let client = onlineClients[i];
@@ -375,7 +381,10 @@ class Teamspeak {
             }
 
             await exchangeChannel.postMessage(`update_tick_get_rank ${client.uniqueIdentifier}`);
-        }
+	    //await exchangeChannel.postMessage(`request_update ${client.uniqueIdentifier}`);
+		console.log("I should start waiting now");
+	    await sleep(1000);
+}
     }
 }
 
